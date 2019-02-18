@@ -1,7 +1,9 @@
-package com.rokomari.newsviews;
+package com.rokomari.newsviews.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.rokomari.newsviews.R;
 
 public class MainActivity extends AppCompatActivity {
 
