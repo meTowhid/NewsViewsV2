@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.IntroActivity" />
-        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.NavigationActivity" />
         <activity android:name=".ui.DetailsActivity" />
     </application>
 

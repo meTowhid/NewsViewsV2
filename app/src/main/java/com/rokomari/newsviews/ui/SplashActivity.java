@@ -17,7 +17,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         new Handler().postDelayed(() -> {
-            SplashActivity.this.startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            SplashActivity.this.startActivity(new Intent(SplashActivity.this, NavigationActivity.class));
 
             SharedPreferences pref = getSharedPreferences(getResources().getString(R.string.app_name), MODE_PRIVATE);
             boolean isFirstLaunch = pref.getBoolean("isFirstLaunch", true);

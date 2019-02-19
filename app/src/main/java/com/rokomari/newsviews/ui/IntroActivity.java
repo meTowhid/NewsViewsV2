@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rokomari.newsviews.R;
@@ -86,10 +85,8 @@ public class IntroActivity extends AppCompatActivity {
             dotsLayout.addView(dots[i]);
         }
 
-        if (dots.length > 0) {
-            dots[current_index].setImageResource(R.drawable.shape_circle);
-            dots[current_index].setColorFilter(getResources().getColor(R.color.grey_10), PorterDuff.Mode.SRC_IN);
-        }
+        dots[current_index].setImageResource(R.drawable.shape_circle);
+        dots[current_index].setColorFilter(getResources().getColor(R.color.grey_10), PorterDuff.Mode.SRC_IN);
     }
 
     //  viewpager change listener
