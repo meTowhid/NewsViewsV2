@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         adapter = new RecyclerViewAdapter(this, new ArrayList<>());
+        recycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.HORIZONTAL));
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setHasFixedSize(true);
         recycler.setAdapter(adapter);

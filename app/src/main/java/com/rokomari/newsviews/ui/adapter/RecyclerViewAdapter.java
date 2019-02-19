@@ -38,13 +38,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Article a = data.get(position);
-        ImageView iv = holder.image;
-        Glide.with(iv.getContext())
-                .load(a.urlToImage)
-                .into(holder.image);
-
         holder.title.setText(a.title);
         holder.subtitle.setText(a.description);
+        holder.date.setText(a.author + " - " + a.publishedAt);
+        Glide.with(context).load(a.urlToImage).into(holder.image);
 
         holder.parent.setOnClickListener(view -> {
 //            Intent intent = new Intent(context, DetailsActivity.class);
@@ -64,10 +61,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @BindView(R.id.image)
         ImageView image;
-        @BindView(R.id.title)
+        @BindView(R.id.tv_title)
         TextView title;
-        @BindView(R.id.subtitle)
+        @BindView(R.id.tv_subtitle)
         TextView subtitle;
+        @BindView(R.id.tv_date)
+        TextView date;
         @BindView(R.id.parent_layout)
         View parent;
 
