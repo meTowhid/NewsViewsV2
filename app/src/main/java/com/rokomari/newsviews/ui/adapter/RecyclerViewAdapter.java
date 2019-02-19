@@ -1,6 +1,8 @@
 package com.rokomari.newsviews.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.rokomari.newsviews.Cons;
 import com.rokomari.newsviews.R;
 import com.rokomari.newsviews.repository.entity.Article;
+import com.rokomari.newsviews.ui.DetailsActivity;
 
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,12 +48,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.date.setText(a.author + " - " + a.publishedAt);
         Glide.with(context).load(a.urlToImage).into(holder.image);
 
-        holder.parent.setOnClickListener(view -> {
-//            Intent intent = new Intent(context, DetailsActivity.class);
-//            intent.putExtra("image_url", mImages.get(position));
-//            intent.putExtra("image_name", a.title);
-//            mContext.startActivity(intent);
-        });
+        holder.parent.setOnClickListener(view -> new AlertDialog.Builder(context)
+                .setMessage("Load in external browser?")
+                .setPositiveButton("Yes", (x, y) -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(a.url));
+                    context.startActivity(browserIntent);
+                }).setNegativeButton("No", (x, y) -> {
+                    Intent intent = new Intent(context, DetailsActivity.class);
+                    intent.putExtra(Cons.article, a.url);
+                    context.startActivity(intent);
+                }).show());
     }
 
     @Override
