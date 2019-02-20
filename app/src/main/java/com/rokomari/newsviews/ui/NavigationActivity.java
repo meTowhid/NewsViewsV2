@@ -2,8 +2,12 @@ package com.rokomari.newsviews.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,8 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
@@ -31,6 +37,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -120,8 +127,10 @@ public class NavigationActivity extends AppCompatActivity
         loginItem.setTitle(user == null ? "Login" : "Logout");
     }
 
+    RemoteRepo remote = RemoteRepo.getInstance();
+
     private void refreshData() {
-        RemoteRepo.getInstance().getNewsArticles(new ResponseCallback() {
+        if (isNetworkAvailable()) remote.getNewsArticles(new ResponseCallback() {
             @Override
             public void onSuccess(Object data) {
                 adapter.data = (List<Article>) data;
@@ -146,23 +155,88 @@ public class NavigationActivity extends AppCompatActivity
         }
     }
 
+    SearchView searchView;
+    MenuItem searchItem;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
+        searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) this.getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+    SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+        public boolean onQueryTextChange(String newText) {
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
+        public boolean onQueryTextSubmit(String query) {
+            fetchFromNumbers(query);
+            return true;
+        }
+    };
+
+    public void hideKeyboard() {
+        View view = this.findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean isAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        if (!isAvailable) new AlertDialog.Builder(this)
+                .setMessage("Make sure you have an active internet connection and try again..")
+                .setPositiveButton("OK", null)
+                .show();
+        return isAvailable;
+    }
+
+    private void fetchFromNumbers(String numberString) {
+        String number = "";
+        try {
+            Integer.parseInt(numberString);
+            number = numberString;
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid number", Toast.LENGTH_SHORT).show();
+        } finally {
+            if (!number.isEmpty() && isNetworkAvailable()) {
+                hideKeyboard();
+                searchItem.collapseActionView();
+                searchView.setQuery("", false);
+                searchView.clearFocus();
+                String finalNumber = number;
+                remote.getNumberMessage(number, new ResponseCallback() {
+                    @Override
+                    public void onSuccess(Object data) {
+                        new AlertDialog.Builder(NavigationActivity.this)
+                                .setTitle(finalNumber)
+                                .setMessage(data.toString())
+                                .setPositiveButton("OK", null)
+                                .show();
+                    }
+
+                    @Override
+                    public void onError(Throwable th) {
+                        Toast.makeText(NavigationActivity.this, th.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
