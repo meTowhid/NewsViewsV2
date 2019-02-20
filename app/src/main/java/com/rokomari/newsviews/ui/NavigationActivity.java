@@ -250,21 +250,24 @@ public class NavigationActivity extends AppCompatActivity
                 showDialogAbout();
                 break;
             case R.id.nav_exit:
-                finish();
+                new AlertDialog.Builder(NavigationActivity.this)
+                        .setMessage("Do you really want to exit?")
+                        .setPositiveButton("yes", (a, b) -> finish())
+                        .setNegativeButton("no", null)
+                        .show();
+
                 break;
             case R.id.nav_login:
                 if (auth.getCurrentUser() == null)
                     startActivityForResult(new Intent(this, LoginActivity.class), 11111);
-                else {
-                    new AlertDialog.Builder(this)
-                            .setTitle("Logout")
-                            .setMessage("Are you sure?")
-                            .setNegativeButton("No", null)
-                            .setPositiveButton("Logout", (a, b) -> {
-                                auth.signOut();
-                                updateUI();
-                            }).show();
-                }
+                else new AlertDialog.Builder(this)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure?")
+                        .setNegativeButton("No", null)
+                        .setPositiveButton("Logout", (a, b) -> {
+                            auth.signOut();
+                            updateUI();
+                        }).show();
                 break;
         }
 

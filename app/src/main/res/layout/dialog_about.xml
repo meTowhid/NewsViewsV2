@@ -9,26 +9,15 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="300dp"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-40dp"
+            android:layout_marginTop="@dimen/spacing_large"
             android:orientation="vertical"
             android:padding="@dimen/spacing_large">
 
@@ -81,21 +70,11 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/bt_rate"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="RATE THIS APP"
-            android:textColor="@color/colorAccent"
-            android:visibility="invisible"
-            app:fontFamily="sans-serif-medium" />
-
-        <Button
             android:id="@+id/bt_getcode"
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_xxlarge"
-            android:background="@color/colorPrimary"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:background="@color/colorAccent"
             android:text="GET SOURCE CODE"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
             android:textColor="@android:color/white"
