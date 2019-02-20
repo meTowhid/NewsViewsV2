@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "797043590232",
+    "firebase_url": "https://vp-root.firebaseio.com",
+    "project_id": "vp-root",
+    "storage_bucket": "vp-root.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797043590232:android:7f98b5fa30aad726",
+        "android_client_info": {
+          "package_name": "com.rokomari.newsviews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797043590232-pb6hnfq0g9ubar0ai28uoikt6rm3i7nb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rokomari.newsviews",
+            "certificate_hash": "15ffb7204c48ecd26b22e3328b2d17e82c7e7fda"
+          }
+        },
+        {
+          "client_id": "797043590232-l4pc6ijeune92efrna8nu5uvgt0d0v9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsRHrs4sGho1d-4VcTjgriAwviPZHBdPI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797043590232-l4pc6ijeune92efrna8nu5uvgt0d0v9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

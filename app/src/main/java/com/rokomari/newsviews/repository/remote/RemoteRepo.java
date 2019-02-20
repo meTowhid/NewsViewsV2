@@ -1,6 +1,7 @@
 package com.rokomari.newsviews.repository.remote;
 
-import com.orhanobut.logger.Logger;
+import android.util.Log;
+
 import com.rokomari.newsviews.Config;
 import com.rokomari.newsviews.repository.Responses;
 
@@ -13,7 +14,7 @@ public class RemoteRepo {
     private static final RemoteRepo ourInstance = new RemoteRepo();
     private WebServices retrofitApiInterface;
 
-   public static RemoteRepo getInstance() {
+    public static RemoteRepo getInstance() {
         return ourInstance;
     }
 
@@ -27,7 +28,7 @@ public class RemoteRepo {
             @Override
             public void onResponse(Call<Responses.Articles> call, Response<Responses.Articles> response) {
 
-                Logger.d("Network layer. User articles Raw response: " + response.raw());
+                Log.d("MyApp", "Network layer. User articles Raw response: " + response.raw());
 
                 Responses.Articles data = response.body();
                 if (data != null && data.status.equals("ok")) callback.onSuccess(data.articles);

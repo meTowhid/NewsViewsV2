@@ -33,7 +33,6 @@ dependencies {
 
     // Core -----------------------------------------------------------------------------------
     def xVersion = '1.0.0'
-    implementation "androidx.core:core-ktx:1.0.1"
     implementation "androidx.cardview:cardview:$xVersion"
     implementation "androidx.appcompat:appcompat:1.0.2"
     implementation "androidx.legacy:legacy-support-v4:$xVersion"
@@ -46,16 +45,8 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
-    // Navigation -----------------------------------------------------------------------------------
-    def navVersion = '1.0.0-beta02'
-    implementation "android.arch.navigation:navigation-fragment-ktx:$navVersion"
-    implementation "android.arch.navigation:navigation-ui-ktx:$navVersion"
-
-    // Glide - No Need to Update -----------------------------------------------------------------------------------
+    // Glide -----------------------------------------------------------------------------------
     implementation 'com.github.bumptech.glide:glide:3.8.0'
-
-    // Logger -----------------------------------------------------------------------------------
-    implementation 'com.orhanobut:logger:2.1.1'
 
     // Retrofit -----------------------------------------------------------------------------------
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -65,4 +56,12 @@ dependencies {
         // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
         exclude module: 'okhttp'
     }
+
+    // Firebase Authentication
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+
+    // Google Sign In SDK (only required for Google Sign In)
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
+apply plugin: 'com.google.gms.google-services'

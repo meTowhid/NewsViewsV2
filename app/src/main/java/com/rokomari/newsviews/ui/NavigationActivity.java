@@ -1,5 +1,6 @@
 package com.rokomari.newsviews.ui;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -7,12 +8,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rokomari.newsviews.BuildConfig;
 import com.rokomari.newsviews.R;
 import com.rokomari.newsviews.repository.entity.Article;
@@ -23,6 +28,7 @@ import com.rokomari.newsviews.ui.adapter.RecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,6 +50,7 @@ public class NavigationActivity extends AppCompatActivity
     SwipeRefreshLayout swipeRefresh;
 
     private RecyclerViewAdapter adapter;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,44 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        name = header.findViewById(R.id.nav_header_name);
+        email = header.findViewById(R.id.nav_header_email);
+        profile_image = header.findViewById(R.id.nav_header_profile_image);
+        loginItem = navigationView.getMenu().findItem(R.id.nav_login);
+
+        auth = FirebaseAuth.getInstance();
+        updateUI();
+    }
+
+    TextView name;
+    TextView email;
+    ImageView profile_image;
+    MenuItem loginItem;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        updateUI();
+    }
+
+    private void updateUI() {
+        FirebaseUser user = auth.getCurrentUser();
+
+        if (user != null) {
+            name.setText(user.getDisplayName());
+            email.setText(user.getEmail());
+
+            Glide.with(this)
+                    .load(user.getPhotoUrl())
+                    .into(profile_image);
+        } else {
+            profile_image.setImageResource(R.drawable.img_wizard_2);
+            name.setText("Guest user");
+            email.setText("");
+        }
+
+        loginItem.setTitle(user == null ? "Login" : "Logout");
     }
 
     private void refreshData() {
@@ -86,7 +131,6 @@ public class NavigationActivity extends AppCompatActivity
 
             @Override
             public void onError(Throwable th) {
-                Toast.makeText(NavigationActivity.this, "onError", Toast.LENGTH_SHORT).show();
                 swipeRefresh.setRefreshing(false);
             }
         });
@@ -111,9 +155,6 @@ public class NavigationActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -131,13 +172,25 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.nav_home:
-                break;
             case R.id.nav_about:
                 showDialogAbout();
                 break;
             case R.id.nav_exit:
                 finish();
+                break;
+            case R.id.nav_login:
+                if (auth.getCurrentUser() == null)
+                    startActivityForResult(new Intent(this, LoginActivity.class), 11111);
+                else {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Logout")
+                            .setMessage("Are you sure?")
+                            .setNegativeButton("No", null)
+                            .setPositiveButton("Logout", (a, b) -> {
+                                auth.signOut();
+                                updateUI();
+                            }).show();
+                }
                 break;
         }
 

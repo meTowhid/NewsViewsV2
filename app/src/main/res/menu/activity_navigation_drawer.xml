@@ -13,4 +13,11 @@
         android:id="@+id/nav_exit"
         android:title="Exit" />
 
+    <item android:title="Authentication">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:title="Login" />
+        </menu>
+    </item>
 </menu>

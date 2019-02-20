@@ -24,6 +24,7 @@
         <activity android:name=".ui.IntroActivity" />
         <activity android:name=".ui.NavigationActivity" />
         <activity android:name=".ui.DetailsActivity" />
+        <activity android:name=".ui.LoginActivity" />
     </application>
 
 </manifest>

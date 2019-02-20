@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.rokomari.newsviews.R;
 
-import org.jetbrains.annotations.NotNull;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -121,9 +119,8 @@ public class IntroActivity extends AppCompatActivity {
         }
 
 
-        @NotNull
         @Override
-        public Object instantiateItem(@NotNull ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, int position) {
             layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             View view = layoutInflater.inflate(R.layout.item_stepper_wizard_color, container, false);
