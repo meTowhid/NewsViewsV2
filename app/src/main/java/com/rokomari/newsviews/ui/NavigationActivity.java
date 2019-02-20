@@ -119,11 +119,11 @@ public class NavigationActivity extends AppCompatActivity
                     .load(user.getPhotoUrl())
                     .into(profile_image);
         } else {
-            profile_image.setImageResource(R.drawable.img_wizard_2);
-            name.setText("Guest user");
-            email.setText("");
+            profile_image.setImageResource(R.drawable.ic_person);
+            name.setText("Guest User");
         }
 
+        email.setVisibility(user == null ? View.GONE : View.VISIBLE);
         loginItem.setTitle(user == null ? "Login" : "Logout");
     }
 
@@ -212,7 +212,7 @@ public class NavigationActivity extends AppCompatActivity
             Integer.parseInt(numberString);
             number = numberString;
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid number", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a valid number", Toast.LENGTH_SHORT).show();
         } finally {
             if (!number.isEmpty() && isNetworkAvailable()) {
                 hideKeyboard();
